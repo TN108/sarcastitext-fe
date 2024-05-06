@@ -5,7 +5,8 @@ import Benefits from "./Benefits";
 import Working from "./Working";
 import Login from "./Login";
 import Signup from "./Signup";
-
+import ContactForm from "./ContactForm";
+import Chatbot from "./Chatbot";
 export{
     Navbar, 
     Hero,
@@ -13,5 +14,7 @@ export{
     Benefits,
     Working,
     Login,
-    Signup
+    Signup,
+    ContactForm,
+    Chatbot
 }

@@ -6,7 +6,7 @@ import { Fade } from "react-awesome-reveal";
 const Benefits = () => {
   return (
     <>
-      <div className="bg-primary">
+      <div className="bg-primary" id="Benefits">
         <Fade>
           <div className="container text-center my-16 p-5 mx-auto">
             <h1 className="text-4xl font-bold text-secondary mb-5">Benefits</h1>

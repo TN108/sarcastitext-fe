@@ -5,7 +5,7 @@ import { Fade, Slide } from "react-awesome-reveal";
 const Working = () => {
   return (
     <>
-      <div className="bg-secondary">
+      <div className="bg-secondary" id="working">
         <div className="container text-center my-16 p-5 mx-auto">
           <Fade>
             <h1 className="text-4xl font-bold mb-5">How it works?</h1>
