@@ -43,13 +43,16 @@ const Signup = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://sarcastitext-be.vercel.app/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         setSuccessMessage("Sign up successful!");

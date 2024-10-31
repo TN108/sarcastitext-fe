@@ -24,7 +24,7 @@ const ContactForm = () => {
     try {
       setLoadingState(true); // Set loading state to true while waiting for API response
 
-      const response = await fetch("http://localhost:8000/contact", {
+      const response = await fetch("https://sarcastitext-be.vercel.app/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

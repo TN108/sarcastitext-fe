@@ -12,9 +12,12 @@ const Chatbot = () => {
   const [inputText, setInputText] = useState("");
 
   async function query(data: string) {
-    const response = await fetch("http://localhost:8000/ask/" + data, {
-      method: "GET",
-    });
+    const response = await fetch(
+      "https://sarcastitext-be.vercel.app/ask/" + data,
+      {
+        method: "GET",
+      }
+    );
     const result = await response.json();
     return result;
   }
