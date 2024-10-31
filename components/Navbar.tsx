@@ -74,7 +74,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <Link
-          href="/login"
+          href="/signup"
           className="btn btn-secondary font-bold rounded-full hidden lg:inline-flex md:inline-flex"
         >
           Try Now!

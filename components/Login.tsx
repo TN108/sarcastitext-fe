@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -17,9 +18,10 @@ const Login = () => {
     const formData = {
       email,
       password,
+      username: "",
     };
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,20 +32,23 @@ const Login = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
-        if (responseData.status === "true") {
-          //   GlobalConifg.username = responseData.username;
-          // Check user role and redirect accordingly
-          if (responseData.userRole === "Student") {
-            router.push("/studentMain");
-          } else if (responseData.userRole === "Teacher") {
-            router.push("/teacherMain");
-          }
-        } else {
-          setErrorMessage("Login failed. Please check your credentials.");
-        }
+        setSuccessMessage("Login Successful!");
+        router.push("/main");
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 5000);
+      } else {
+        setErrorMessage("Login failed. Please check your credentials.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
       }
     } catch (error) {
       console.error("An error occurred while sending form data:", error);
+      setErrorMessage("An unexpected error occurred. Please try again later.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
     }
   };
 
@@ -81,7 +86,7 @@ const Login = () => {
               </p>
               <div className="flex flex-col flex-shrink my-12">
                 <input
-                  className="bg-secondary  mb-2"
+                  className="bg-secondary  mb-2 text-accent outline-none"
                   type="email"
                   name="email"
                   value={email}
@@ -91,7 +96,7 @@ const Login = () => {
                 />
                 <hr className="w-96 border-accent mb-2  " />
                 <input
-                  className="bg-secondary  my-3 mb-2"
+                  className="bg-secondary  my-3 mb-2 text-accent outline-none"
                   type="password"
                   name="password"
                   value={password}
@@ -100,9 +105,9 @@ const Login = () => {
                   required
                 />
                 <hr className="w-96 border-accent mb-8  " />
-                <Link rel="stylesheet" href="" className="text-xs  text-accent">
+                {/* <Link rel="stylesheet" href="" className="text-xs  text-accent">
                   Forgot Password?
-                </Link>
+                </Link> */}
               </div>
               <button
                 rel="stylesheet"
@@ -123,9 +128,14 @@ const Login = () => {
                 Signup
               </Link>
             </div>
-            <div className="border-red-500 text-red-500 mt-4">
-              {errorMessage}
-            </div>
+            {successMessage && (
+              <div className=" text-green-500 mt-4">{successMessage}</div>
+            )}
+            {errorMessage && (
+              <div className="border-red-500 text-red-500 mt-4">
+                {errorMessage}
+              </div>
+            )}
           </div>
         </div>
       </div>

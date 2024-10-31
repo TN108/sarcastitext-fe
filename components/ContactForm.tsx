@@ -1,11 +1,11 @@
 "use client";
-import React, { ChangeEvent, Suspense, useState } from "react";
+import React, { useState } from "react";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    question: "",
+    message: "",
   });
 
   const [loadingState, setLoadingState] = useState(false);
@@ -24,25 +24,22 @@ const ContactForm = () => {
     try {
       setLoadingState(true); // Set loading state to true while waiting for API response
 
-      const response = await fetch(
-        "https://formsubmit.co/cc1163030be7fa0f68d22835a0ebb62f",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("http://localhost:8000/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
         console.log("Form data sent successfully!");
         // Optionally, you can reset the form data state here
         setMessageDisplay(true);
         setFormData({
-          fullName: "",
+          name: "",
           email: "",
-          question: "",
+          message: "",
         });
         setTimeout(() => {
           setMessageDisplay(false);
@@ -82,8 +79,8 @@ const ContactForm = () => {
                       type="text"
                       placeholder="Full Name"
                       className="input input-bordered w-full my-3 bg-secondary text-md"
-                      name="fullName"
-                      value={formData.fullName}
+                      name="name"
+                      value={formData.name}
                       onChange={handleInputChange}
                       required
                     />
@@ -98,9 +95,9 @@ const ContactForm = () => {
                     />
                     <textarea
                       className="textarea input-bordered w-full my-3 bg-secondary text-md"
-                      placeholder="Your Question"
-                      name="question"
-                      value={formData.question}
+                      placeholder="Your Message"
+                      name="message"
+                      value={formData.message}
                       onChange={handleInputChange}
                       required
                     ></textarea>

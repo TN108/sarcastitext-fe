@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [profession, setProfession] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // New state for error message
+  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
+  const router = useRouter();
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -20,10 +22,6 @@ const Signup = () => {
     if (!email.endsWith("@gmail.com")) {
       setErrorMessage("Please provide a valid Gmail address.");
       return; // Stop execution if the email domain is not @gmail.com
-    }
-    if (!(profession === "Student" || profession === "Teacher")) {
-      setErrorMessage("Please select a valid profession (Student or Teacher).");
-      return; // Stop execution if the profession is not valid
     }
     if (password.length <= 5) {
       setErrorMessage("Password should be greater than 5 characters.");
@@ -42,23 +40,36 @@ const Signup = () => {
       username,
       email,
       password,
-      profession,
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/signup", {
+      const response = await fetch("http://localhost:8000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      const responseData = await response.json();
-      if (responseData.message) {
-        setErrorMessage(responseData.message);
+
+      if (response.ok) {
+        setSuccessMessage("Sign up successful!");
+        router.push("/main");
+
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 5000);
+      } else {
+        setErrorMessage("Signup failed. Please try again.");
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
       }
     } catch (error) {
       console.error("An error occurred while sending form data:", error);
+      setErrorMessage("An unexpected error occurred. Please try again later.");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
     }
   };
   return (
@@ -93,7 +104,7 @@ const Signup = () => {
               </p>
               <div className="flex flex-col flex-shrink my-12">
                 <input
-                  className="bg-secondary mb-2"
+                  className="bg-secondary mb-2 text-accent outline-none"
                   type="username"
                   name="username"
                   value={username}
@@ -104,7 +115,7 @@ const Signup = () => {
 
                 <hr className="w-full border-accent mb-6  " />
                 <input
-                  className="bg-secondary  mb-2"
+                  className="bg-secondary  mb-2 text-accent outline-none"
                   type="email"
                   name="email"
                   value={email}
@@ -115,7 +126,7 @@ const Signup = () => {
                 <hr className="w-96 border-accent mb-6  " />
 
                 <input
-                  className="bg-secondary mb-2"
+                  className="bg-secondary mb-2 text-accent outline-none"
                   type="password"
                   name="password"
                   placeholder="Password"
@@ -144,9 +155,15 @@ const Signup = () => {
                 Login
               </Link>
             </div>
-            <div className="border-red-500 text-red-500 mt-4">
-              {errorMessage}
-            </div>
+            {successMessage && (
+              <div className=" text-green-500 mt-4">{successMessage}</div>
+            )}
+
+            {errorMessage && (
+              <div className="border-red-500 text-red-500 mt-4">
+                {errorMessage}
+              </div>
+            )}
           </div>
         </div>
       </div>
